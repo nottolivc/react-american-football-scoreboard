@@ -1,5 +1,5 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./App.css";
 import BottomRow from "./BottomRow";
 
@@ -8,9 +8,9 @@ function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
 const [homeScore, setScoreHome] = useState(0);
 const [awayScore, setScoreAway] = useState(0);
-const [timer, setTimer] = useState(0);
+const [timer, setTimer] = useState(1000);
 
-
+//add the functions for the buttons below to work
 const homeTouchDown = () => {
   setScoreHome(homeScore + 7);
 }
@@ -23,13 +23,27 @@ const awayTouchDown = () => {
 const awayFieldGoal = () => {
   setScoreAway(awayScore + 3);
 }
+//setTimeout function for counting 
+// setTimeout( () => {  
+//    setTimer(timer - 1);
+// }, 1000);
 
-setTimeout( () => {  
-    setTimer(timer + 1);
-}, 1000);
+  // react hooks timer function useEffect
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setTimer(previousTime => { 
+        if (previousTime > 0) { 
+          setTimer(previousTime - 1);
+        } 
+      })
+    }, 1000);
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, []);
 
 
-  return (
+return (
     <div className="container">
       <section className="scoreboard">
         <div className="topRow">
@@ -63,4 +77,6 @@ setTimeout( () => {
   );
 }
 
+
+//<button {homeScore = 0; awayScore = 0;}>Reset</button>
 export default App;
